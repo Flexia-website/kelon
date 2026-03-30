@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# app.py - Kelon Bank KX Premium Production Version
+# app.py - Kelon Bank KX Premium Production Version - COMPLETE
 
 import os
 import re
@@ -1007,7 +1007,7 @@ def init_database():
                     )
                     db.session.add(demo_user)
                     db.session.commit()
-                    logger.info("Demo user created!")
+                    logger.info("Demo user created! Account: 3012345678, Password: demo123")
             except Exception as e:
                 logger.error(f"Demo user creation error: {e}")
         
@@ -1016,202 +1016,509 @@ def init_database():
 # Initialize database
 init_database()
 
-# --- HTML Template (truncated for brevity - use your full HTML_TEMPLATE here) ---
-HTML_TEMPLATE = """
-<!DOCTYPE html>
+# --- HTML Template - FULL COMPLETE VERSION ---
+HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KX PREMIUM | Kelon Bank</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>KX PREMIUM | Kelon Bank • Elite Digital Banking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,500;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #0a0a0a; color: white; }
-        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
-        .glass-card { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin: 10px 0; }
-        .gold { color: #D4AF37; }
-        .balance { font-size: 48px; font-weight: bold; text-align: center; margin: 20px 0; }
-        button { background: #D4AF37; color: black; padding: 12px; border: none; border-radius: 10px; width: 100%; margin: 10px 0; cursor: pointer; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 10px; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; padding: 20px; overflow-y: auto; }
-        .modal-content { background: #1a1a1a; border-radius: 20px; padding: 20px; max-width: 500px; margin: 50px auto; }
+        body { background: radial-gradient(circle at 10% 20%, #0A0A0A, #020202); font-family: 'Inter', sans-serif; color: #FFFFFF; min-height: 100vh; }
+        .container { max-width: 520px; margin: 0 auto; padding: 20px 18px 90px 18px; }
+        .glass-card { background: rgba(20, 20, 28, 0.75); backdrop-filter: blur(16px); border-radius: 32px; padding: 24px; margin-bottom: 20px; border: 1px solid rgba(201, 168, 76, 0.3); }
+        .gold-text, .gold { color: #D4AF37; }
+        .balance { font-size: 52px; font-weight: 800; background: linear-gradient(135deg, #F9E0A0, #D4AF37); -webkit-background-clip: text; background-clip: text; color: transparent; text-align: center; margin: 16px 0; }
+        .button-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 20px 0; }
+        .action-btn { background: rgba(30, 30, 38, 0.8); border: 1px solid rgba(212, 175, 55, 0.4); padding: 14px 6px; border-radius: 24px; text-align: center; cursor: pointer; transition: all 0.25s; font-weight: 600; font-size: 13px; }
+        .action-btn i { display: block; font-size: 24px; margin-bottom: 6px; color: #D4AF37; }
+        .action-btn:hover { background: rgba(212, 175, 55, 0.2); transform: translateY(-3px); }
+        input, select { width: 100%; padding: 14px 16px; margin: 10px 0; background: rgba(15, 15, 20, 0.9); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 20px; color: white; font-size: 15px; }
+        input:focus { outline: none; border-color: #D4AF37; box-shadow: 0 0 0 3px rgba(212,175,55,0.2); }
+        button { background: linear-gradient(105deg, #D4AF37, #B8922A); color: #0A0A0A; padding: 14px; border: none; border-radius: 28px; font-weight: 700; cursor: pointer; width: 100%; font-size: 16px; margin-top: 12px; transition: all 0.2s; }
+        button:hover { transform: scale(0.98); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.96); backdrop-filter: blur(20px); z-index: 1100; padding: 20px; overflow-y: auto; }
+        .modal-content { background: #121218; border-radius: 40px; padding: 28px 24px; max-width: 500px; margin: 30px auto; border: 1px solid rgba(212, 175, 55, 0.5); }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1E1A0F; backdrop-filter: blur(16px); color: #D4AF37; padding: 12px 28px; border-radius: 60px; z-index: 2100; font-weight: 600; border: 1px solid #D4AF37; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(30px);} to { opacity: 1; transform: translateX(-50%) translateY(0);} }
+        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; max-width: 520px; margin: 0 auto; background: rgba(8, 8, 12, 0.92); backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 12px 20px 26px; border-top: 1px solid rgba(212, 175, 55, 0.5); z-index: 100; }
+        .nav-item { text-align: center; cursor: pointer; padding: 8px 18px; border-radius: 40px; font-weight: 600; }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 5px; color: #D4AF37; }
+        .receipt-card { background: rgba(0,0,0,0.5); border-radius: 20px; padding: 16px; margin: 12px 0; border-left: 3px solid #D4AF37; }
+        .otp-timer { color: #D4AF37; font-size: 12px; text-align: center; margin-top: 8px; }
+        .resend-btn { background: transparent; border: 1px solid #D4AF37; color: #D4AF37; margin-top: 5px; }
+        .resend-btn:hover { background: rgba(212,175,55,0.2); transform: none; }
+        .klm-logo { width: 40px; height: 40px; border-radius: 50%; background: #D4AF37; display: flex; align-items: center; justify-content: center; margin-right: 12px; }
+        .klm-logo i { font-size: 24px; color: #0A0A0A; }
+        .user-profile { display: flex; align-items: center; margin-bottom: 20px; }
+        .admin-badge { background: #D4AF37; color: #0A0A0A; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-left: 10px; }
+        .search-result { background: rgba(212,175,55,0.1); padding: 15px; border-radius: 16px; margin: 10px 0; border: 1px solid rgba(212,175,55,0.3); }
+        .close-btn { background: rgba(255,255,255,0.1); color: white; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div id="authScreen" class="container">
-        <div class="glass-card">
-            <h1 style="text-align:center;">KX PREMIUM</h1>
-            <div id="loginSection">
-                <input type="text" id="loginAccount" placeholder="Account Number">
-                <input type="password" id="loginPassword" placeholder="Password">
-                <button onclick="login()">Login</button>
-                <button onclick="showRegister()">Create Account</button>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="container" style="display: flex; align-items: center; min-height: 100vh;">
+    <div class="glass-card" style="width: 100%;">
+        <div style="text-align:center;">
+            <div style="margin: 0 auto 20px; width: 80px; height: 80px; background: linear-gradient(135deg, #D4AF37, #F9E0A0); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-crown" style="font-size: 48px; color: #0A0A0A;"></i>
             </div>
-            <div id="registerSection" style="display:none;">
-                <input type="text" id="regName" placeholder="Full Name">
-                <input type="tel" id="regPhone" placeholder="Phone Number">
-                <input type="password" id="regPassword" placeholder="Password">
-                <div id="otpSection" style="display:none;">
-                    <input type="text" id="otpCode" placeholder="Enter OTP">
+            <h1>KX PREMIUM</h1>
+            <p style="opacity:0.7;"><i class="fas fa-shield-alt"></i> Elite Digital Vault</p>
+        </div>
+        <div id="loginSection">
+            <input type="text" id="loginAccount" placeholder="Account Number (30XXXXXXXX)">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <button onclick="login()"><i class="fas fa-unlock-alt"></i> Access Vault</button>
+            <p style="text-align:center; margin-top: 24px;">
+                <a href="#" onclick="showRegister()" style="color:#D4AF37;"><i class="fas fa-user-plus"></i> Create Account</a>
+            </p>
+        </div>
+        <div id="registerSection" style="display:none;">
+            <input type="text" id="regName" placeholder="Full Name">
+            <input type="tel" id="regPhone" placeholder="Phone (080XXXXXXXX)">
+            <input type="password" id="regPassword" placeholder="Password (min 6)">
+            <div id="otpSection" style="display:none;">
+                <input type="text" id="otpCode" placeholder="Enter 6-digit OTP" maxlength="6">
+                <div id="otpTimer" class="otp-timer"></div>
+                <button class="resend-btn" onclick="resendOTP()"><i class="fas fa-redo"></i> Resend OTP</button>
+            </div>
+            <button id="registerBtn" onclick="requestOTP()"><i class="fas fa-paper-plane"></i> Send OTP</button>
+            <p style="text-align:center; margin-top: 20px;">
+                <a href="#" onclick="showLogin()" style="color:#D4AF37;"><i class="fas fa-arrow-left"></i> Back to Login</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none;">
+    <div class="container">
+        <div class="header" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px;">
+            <div style="display: flex; align-items: center;">
+                <div class="klm-logo" style="width: 45px; height: 45px; margin-right: 10px;">
+                    <i class="fas fa-crown"></i>
                 </div>
-                <button id="registerBtn" onclick="requestOTP()">Send OTP</button>
-                <button onclick="showLogin()">Back</button>
+                <div style="font-weight: 800; font-size: 26px;">KX <i class="fas fa-gem" style="color:#D4AF37;"></i></div>
             </div>
+            <div class="account-badge" style="background: rgba(212,175,55,0.2); padding: 8px 16px; border-radius: 60px; font-size: 13px;" id="accountDisplay"></div>
+            <div onclick="toggleGhostMode()" style="cursor:pointer;"><i class="fas fa-eye"></i></div>
         </div>
-    </div>
-    <div id="dashboard" style="display:none;">
-        <div class="container">
-            <div class="glass-card">
-                <h3 id="userName"></h3>
-                <div class="balance" id="mainBalance">₦0</div>
-                <button onclick="logout()">Logout</button>
-            </div>
-            <div class="glass-card">
-                <button onclick="openModal('transferModal')">Transfer</button>
-                <button onclick="openModal('airtimeModal')">Buy Airtime</button>
-                <button onclick="openModal('settingsModal')">Settings</button>
-            </div>
-        </div>
-    </div>
-    <div id="transferModal" class="modal">
-        <div class="modal-content">
-            <h3>Transfer</h3>
-            <input type="text" id="recipientAccount" placeholder="Recipient Account">
-            <input type="number" id="transferAmount" placeholder="Amount">
-            <input type="password" id="transferPin" placeholder="PIN" maxlength="4">
-            <button onclick="executeTransfer()">Send</button>
-            <button onclick="closeModal('transferModal')">Cancel</button>
-        </div>
-    </div>
-    <div id="airtimeModal" class="modal">
-        <div class="modal-content">
-            <h3>Buy Airtime</h3>
-            <input type="tel" id="airtimePhone" placeholder="Phone Number">
-            <input type="number" id="airtimeAmount" placeholder="Amount">
-            <input type="password" id="airtimePin" placeholder="PIN" maxlength="4">
-            <button onclick="buyAirtime()">Purchase</button>
-            <button onclick="closeModal('airtimeModal')">Cancel</button>
-        </div>
-    </div>
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <h3>Settings</h3>
-            <input type="password" id="newPin" placeholder="Set Transaction PIN" maxlength="4">
-            <button onclick="setPin()">Save PIN</button>
-            <button onclick="closeModal('settingsModal')">Close</button>
-        </div>
-    </div>
-    <script>
-        let currentUser = null;
         
-        async function apiCall(url, method, data) {
-            const res = await fetch(url, {
-                method: method,
-                headers: {'Content-Type': 'application/json'},
-                body: data ? JSON.stringify(data) : undefined
+        <div class="glass-card">
+            <div class="user-profile">
+                <div class="klm-logo">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div>
+                    <div style="font-weight: bold; font-size: 18px;" id="userName"></div>
+                    <div style="font-size: 12px; opacity: 0.8;"><i class="fas fa-building"></i> KLM Banking Group</div>
+                </div>
+                <div id="adminBadge" style="margin-left: auto;"></div>
+            </div>
+            <div style="text-align:center; font-size: 12px;">AVAILABLE BALANCE</div>
+            <div class="balance" id="mainBalance">₦0.00</div>
+            <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                <span><i class="fas fa-book"></i> Book Balance</span>
+                <span id="bookBalance">₦0.00</span>
+            </div>
+        </div>
+        
+        <div class="button-grid">
+            <div class="action-btn" onclick="openModal('transferModal')"><i class="fas fa-paper-plane"></i>Transfer</div>
+            <div class="action-btn" onclick="openModal('airtimeModal')"><i class="fas fa-phone"></i>Airtime</div>
+            <div class="action-btn" onclick="openModal('dataModal')"><i class="fas fa-wifi"></i>Data</div>
+            <div class="action-btn" onclick="openModal('billsModal')"><i class="fas fa-receipt"></i>Bills</div>
+        </div>
+        
+        <div class="glass-card">
+            <h3><i class="fas fa-chart-pie"></i> Quick Stats</h3>
+            <div style="margin-top: 14px; display: grid; gap: 10px;">
+                <div style="display: flex; justify-content: space-between;"><span><i class="fas fa-vault"></i> Kelon Vault</span><span class="gold" id="vaultBalance">₦0</span></div>
+                <div style="display: flex; justify-content: space-between;"><span><i class="fas fa-chart-simple"></i> Investment</span><span class="gold" id="investmentValue">₦0</span></div>
+                <div style="display: flex; justify-content: space-between;"><span><i class="fas fa-gift"></i> Cashback</span><span class="gold" id="cashbackLedger">₦0</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <div class="nav-item" onclick="openModal('insightsModal')"><i class="fas fa-chart-line"></i>Insights</div>
+        <div class="nav-item" onclick="openModal('receiptsModal')"><i class="fas fa-receipt"></i>Receipts</div>
+        <div class="nav-item" onclick="openModal('settingsModal')"><i class="fas fa-sliders-h"></i>Settings</div>
+        <div class="nav-item" onclick="openModal('adminModal')" id="adminNavItem" style="display:none;"><i class="fas fa-user-shield"></i>Admin</div>
+    </div>
+</div>
+
+<!-- Admin Modal -->
+<div id="adminModal" class="modal">
+    <div class="modal-content">
+        <h3><i class="fas fa-user-shield gold"></i> Admin Panel</h3>
+        <div style="margin: 20px 0;">
+            <h4>Add Money to User</h4>
+            <input type="text" id="adminSearchAccount" placeholder="Enter Account Number or Phone" oninput="searchUserForAdmin()">
+            <div id="adminUserResult"></div>
+            <input type="number" id="adminAmount" placeholder="Amount (₦)" step="1000">
+            <input type="text" id="adminDescription" placeholder="Description (Optional)">
+            <input type="password" id="adminPin" placeholder="Admin PIN" maxlength="6">
+            <button onclick="adminAddMoney()"><i class="fas fa-money-bill-wave"></i> Add Money</button>
+        </div>
+        <hr>
+        <div style="margin: 20px 0;">
+            <h4>All Users</h4>
+            <button onclick="loadAllUsers()"><i class="fas fa-users"></i> Load Users</button>
+            <div id="allUsersList" style="max-height: 300px; overflow-y: auto; margin-top: 10px;"></div>
+        </div>
+        <button class="close-btn" onclick="closeModal('adminModal')">Close</button>
+    </div>
+</div>
+
+<!-- Other Modals -->
+<div id="transferModal" class="modal"><div class="modal-content"><h3><i class="fas fa-paper-plane gold"></i> Transfer</h3><input type="text" id="recipientAccount" placeholder="Recipient Account" oninput="verifyRecipient()"><div id="recipientInfo"></div><input type="number" id="transferAmount" placeholder="Amount (₦)"><input type="text" id="transferNarrative" placeholder="Reference"><input type="password" id="transferPin" maxlength="4" placeholder="4-digit PIN"><button onclick="executeTransfer()"><i class="fas fa-send"></i> Send</button><button class="close-btn" onclick="closeModal('transferModal')">Cancel</button></div></div>
+
+<div id="airtimeModal" class="modal"><div class="modal-content"><h3><i class="fas fa-phone gold"></i> Buy Airtime</h3><select id="airtimeNetwork"><option>MTN</option><option>GLO</option><option>Airtel</option><option>9mobile</option></select><input type="tel" id="airtimePhone" placeholder="Phone Number"><input type="number" id="airtimeAmount" placeholder="Amount (₦)"><input type="password" id="airtimePin" maxlength="4" placeholder="4-digit PIN"><button onclick="buyAirtime()"><i class="fas fa-check"></i> Purchase</button><button class="close-btn" onclick="closeModal('airtimeModal')">Cancel</button></div></div>
+
+<div id="dataModal" class="modal"><div class="modal-content"><h3><i class="fas fa-wifi gold"></i> Buy Data</h3><select id="dataNetwork"><option>MTN</option><option>GLO</option><option>Airtel</option><option>9mobile</option></select><select id="dataPlan"><option value="500MB">500MB - ₦500</option><option value="1GB">1GB - ₦1000</option><option value="2GB">2GB - ₦2000</option><option value="5GB">5GB - ₦5000</option></select><input type="tel" id="dataPhone" placeholder="Phone Number"><input type="password" id="dataPin" maxlength="4" placeholder="4-digit PIN"><button onclick="buyData()"><i class="fas fa-download"></i> Purchase Data</button><button class="close-btn" onclick="closeModal('dataModal')">Cancel</button></div></div>
+
+<div id="billsModal" class="modal"><div class="modal-content"><h3><i class="fas fa-receipt"></i> Pay Bills</h3><select id="billType"><option>Electricity</option><option>Cable TV</option><option>Water Bill</option></select><input type="text" id="billRef" placeholder="Reference/Meter No"><input type="number" id="billAmount" placeholder="Amount"><input type="password" id="billPin" maxlength="4" placeholder="PIN"><button onclick="payBill()"><i class="fas fa-credit-card"></i> Pay</button><button class="close-btn" onclick="closeModal('billsModal')">Cancel</button></div></div>
+
+<div id="insightsModal" class="modal"><div class="modal-content"><h3><i class="fas fa-chart-line gold"></i> Insights</h3><div id="insightsList" style="max-height:400px; overflow-y:auto;"></div><button class="close-btn" onclick="closeModal('insightsModal')">Close</button></div></div>
+
+<div id="receiptsModal" class="modal"><div class="modal-content"><h3><i class="fas fa-receipt gold"></i> Transaction Receipts</h3><div id="receiptsList" style="max-height:500px; overflow-y:auto;"></div><button class="close-btn" onclick="closeModal('receiptsModal')">Close</button></div></div>
+
+<div id="settingsModal" class="modal"><div class="modal-content"><h3><i class="fas fa-sliders-h"></i> Settings</h3><h4>Set Transaction PIN</h4><input type="password" id="newPin" maxlength="4" placeholder="4-digit PIN"><button onclick="setPin()"><i class="fas fa-save"></i> Save PIN</button><div class="secret-section" style="border-top:2px dashed #D4AF37; margin-top:20px; padding-top:18px;"><h4>Secret Money Addition</h4><input type="password" id="secretCode" placeholder="Secret Code"><input type="number" id="secretAmount" placeholder="Amount (Max ₦10M)"><button onclick="secretAddMoney()" style="background:linear-gradient(105deg,#f5a623,#e67e22);">Add Funds</button></div><hr><button onclick="logout()" style="background:#a1322e;">Logout</button><button class="close-btn" onclick="closeModal('settingsModal')">Close</button></div></div>
+
+<script>
+    let currentUser = null;
+    let refreshInterval = null;
+    let otpTimerInterval = null;
+    let currentPhone = '';
+
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = `<i class="fas fa-bell"></i> ${msg}`; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    
+    async function apiCall(url, method, data) { 
+        try { 
+            const res = await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: data ? JSON.stringify(data) : undefined }); 
+            return await res.json(); 
+        } catch(e) { 
+            showToast('Network error'); 
+            return {error: e.message}; 
+        } 
+    }
+    
+    async function requestOTP() {
+        let phone = document.getElementById('regPhone').value;
+        let password = document.getElementById('regPassword').value;
+        
+        if(!phone || !password) { showToast('Phone and password required'); return; }
+        if(password.length < 6) { showToast('Password must be at least 6 characters'); return; }
+        
+        currentPhone = phone;
+        let res = await apiCall('/api/send-otp', 'POST', {phone});
+        if(res.error) showToast(res.error);
+        else {
+            showToast(`OTP sent! Your OTP is: ${res.otp}`);
+            document.getElementById('otpSection').style.display = 'block';
+            document.getElementById('registerBtn').innerHTML = '<i class="fas fa-check"></i> Verify OTP & Register';
+            document.getElementById('registerBtn').onclick = () => verifyOTPAndRegister();
+            startOTPTimer(300);
+        }
+    }
+    
+    function startOTPTimer(seconds) {
+        if(otpTimerInterval) clearInterval(otpTimerInterval);
+        let timer = seconds;
+        otpTimerInterval = setInterval(() => {
+            if(timer <= 0) { clearInterval(otpTimerInterval); document.getElementById('otpTimer').innerHTML = 'OTP expired. Request new one.'; }
+            else { let mins = Math.floor(timer/60); let secs = timer%60; document.getElementById('otpTimer').innerHTML = `OTP expires in: ${mins}:${secs.toString().padStart(2,'0')}`; timer--; }
+        }, 1000);
+    }
+    
+    async function verifyOTPAndRegister() {
+        let otp = document.getElementById('otpCode').value;
+        let phone = currentPhone;
+        let password = document.getElementById('regPassword').value;
+        let full_name = document.getElementById('regName').value || 'KX User';
+        
+        if(!otp) { showToast('Enter OTP'); return; }
+        let res = await apiCall('/api/verify-otp', 'POST', {phone, otp, password, full_name});
+        if(res.error) showToast(res.error);
+        else {
+            showToast(res.message);
+            showLogin();
+            if(otpTimerInterval) clearInterval(otpTimerInterval);
+        }
+    }
+    
+    async function resendOTP() {
+        let phone = currentPhone;
+        let res = await apiCall('/api/send-otp', 'POST', {phone});
+        if(res.error) showToast(res.error);
+        else { showToast(`New OTP: ${res.otp}`); startOTPTimer(300); }
+    }
+    
+    async function verifyRecipient() {
+        let acc = document.getElementById('recipientAccount')?.value;
+        if(acc && acc.length===10 && acc.startsWith('30')) {
+            let res = await apiCall('/api/get-user-by-account','POST',{account_number:acc});
+            let infoDiv = document.getElementById('recipientInfo');
+            if(res.success) infoDiv.innerHTML = `<div class="search-result"><i class="fas fa-check-circle"></i> Recipient: ${res.full_name}</div>`;
+            else infoDiv.innerHTML = `<div class="search-result" style="border-left-color:#f44336;"><i class="fas fa-exclamation-triangle"></i> Account not found</div>`;
+        }
+    }
+    
+    async function searchUserForAdmin() {
+        let searchTerm = document.getElementById('adminSearchAccount').value;
+        if(searchTerm.length >= 8) {
+            let res = await apiCall('/api/admin/search-user', 'POST', {search_term: searchTerm});
+            let resultDiv = document.getElementById('adminUserResult');
+            if(res.success) {
+                resultDiv.innerHTML = `
+                    <div class="search-result">
+                        <i class="fas fa-user-circle"></i> <strong>${res.user.full_name}</strong><br>
+                        <small>Account: ${res.user.account_number} | Phone: ${res.user.phone}</small><br>
+                        <small>Current Balance: ₦${res.user.available_balance.toLocaleString()}</small>
+                    </div>
+                `;
+                document.getElementById('adminAmount').focus();
+            } else if(res.error && !searchTerm) {
+                resultDiv.innerHTML = '';
+            } else if(res.error) {
+                resultDiv.innerHTML = `<div class="search-result" style="border-left-color:#f44336;">❌ ${res.error}</div>`;
+            }
+        }
+    }
+    
+    async function adminAddMoney() {
+        let account_number = document.getElementById('adminSearchAccount').value;
+        let amount = parseFloat(document.getElementById('adminAmount').value);
+        let description = document.getElementById('adminDescription').value;
+        let admin_pin = document.getElementById('adminPin').value;
+        
+        if(!account_number || !amount || !admin_pin) {
+            showToast('Please fill all fields');
+            return;
+        }
+        
+        let res = await apiCall('/api/admin/add-money', 'POST', {
+            account_number,
+            amount,
+            description,
+            admin_pin
+        });
+        
+        if(res.error) showToast(res.error);
+        else {
+            showToast(`Successfully added ₦${amount.toLocaleString()} to ${res.user_name}`);
+            document.getElementById('adminSearchAccount').value = '';
+            document.getElementById('adminAmount').value = '';
+            document.getElementById('adminDescription').value = '';
+            document.getElementById('adminPin').value = '';
+            document.getElementById('adminUserResult').innerHTML = '';
+            if(currentUser && currentUser.account_number === account_number) {
+                await refreshUser();
+            }
+        }
+    }
+    
+    async function loadAllUsers() {
+        let res = await apiCall('/api/admin/all-users', 'GET');
+        if(res.success && res.users) {
+            let html = '';
+            res.users.forEach(user => {
+                html += `
+                    <div class="receipt-card" style="cursor:pointer;" onclick="document.getElementById('adminSearchAccount').value='${user.account_number}'; searchUserForAdmin(); closeModal('adminModal'); openModal('adminModal');">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span><i class="fas fa-user"></i> ${user.full_name}</span>
+                            <span class="gold">₦${user.available_balance.toLocaleString()}</span>
+                        </div>
+                        <div style="font-size:12px;">Account: ${user.account_number} | Phone: ${user.phone}</div>
+                        ${user.is_admin ? '<span class="admin-badge">ADMIN</span>' : ''}
+                    </div>
+                `;
             });
-            return await res.json();
+            document.getElementById('allUsersList').innerHTML = html;
         }
-        
-        async function requestOTP() {
-            let phone = document.getElementById('regPhone').value;
-            let res = await apiCall('/api/send-otp', 'POST', {phone});
-            if(res.error) alert(res.error);
-            else {
-                alert(`OTP: ${res.otp}`);
-                document.getElementById('otpSection').style.display = 'block';
-                document.getElementById('registerBtn').innerHTML = 'Verify OTP';
-                document.getElementById('registerBtn').onclick = () => verifyOTP();
+    }
+    
+    async function login() {
+        let account = document.getElementById('loginAccount').value;
+        let password = document.getElementById('loginPassword').value;
+        if(!account || !password) { showToast('Enter account & password'); return; }
+        let res = await apiCall('/api/login','POST',{account_number: account, password});
+        if(res.error) showToast(res.error);
+        else { 
+            currentUser = res.user; 
+            renderDashboard(); 
+            document.getElementById('authScreen').style.display = 'none'; 
+            document.getElementById('dashboard').style.display = 'block'; 
+            startRefresh(); 
+            showToast(`Welcome ${currentUser.full_name} to KLM Banking Group!`); 
+            
+            if(currentUser.is_admin) {
+                document.getElementById('adminNavItem').style.display = 'block';
             }
         }
+    }
+    
+    function renderDashboard() {
+        if(!currentUser) return;
+        document.getElementById('accountDisplay').innerHTML = `${currentUser.full_name}<br>${currentUser.account_number}`;
+        document.getElementById('userName').innerHTML = currentUser.full_name;
+        document.getElementById('mainBalance').innerHTML = `₦${currentUser.available_balance.toLocaleString()}`;
+        document.getElementById('bookBalance').innerHTML = `₦${currentUser.book_balance.toLocaleString()}`;
+        document.getElementById('vaultBalance').innerHTML = `₦${currentUser.kelon_vault.toLocaleString()}`;
+        document.getElementById('investmentValue').innerHTML = `₦${currentUser.investment_value.toLocaleString()}`;
+        document.getElementById('cashbackLedger').innerHTML = `₦${currentUser.cashback_ledger.toLocaleString()}`;
         
-        async function verifyOTP() {
-            let phone = document.getElementById('regPhone').value;
-            let otp = document.getElementById('otpCode').value;
-            let password = document.getElementById('regPassword').value;
-            let full_name = document.getElementById('regName').value;
-            let res = await apiCall('/api/verify-otp', 'POST', {phone, otp, password, full_name});
-            if(res.error) alert(res.error);
-            else {
-                alert(res.message);
-                showLogin();
-            }
+        if(currentUser.is_admin) {
+            document.getElementById('adminBadge').innerHTML = '<span class="admin-badge"><i class="fas fa-user-shield"></i> ADMIN</span>';
         }
         
-        async function login() {
-            let account_number = document.getElementById('loginAccount').value;
-            let password = document.getElementById('loginPassword').value;
-            let res = await apiCall('/api/login', 'POST', {account_number, password});
-            if(res.error) alert(res.error);
-            else {
-                currentUser = res.user;
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('userName').innerHTML = currentUser.full_name;
-                document.getElementById('mainBalance').innerHTML = `₦${currentUser.available_balance.toLocaleString()}`;
-            }
+        updateInsights();
+    }
+    
+    function updateInsights() {
+        let insights = [
+            {label:'Available Balance', val:currentUser.available_balance},
+            {label:'Kelon Vault', val:currentUser.kelon_vault},
+            {label:'Betting Wallet', val:currentUser.betting_wallet},
+            {label:'Charity Pot', val:currentUser.charity_pot},
+            {label:'Loan Eligibility', val:currentUser.loan_eligibility},
+            {label:'Monthly Inflow', val:currentUser.monthly_inflow},
+            {label:'Airtime Balance', val:currentUser.airtime_balance},
+            {label:'Data Balance', val:currentUser.data_balance}
+        ];
+        let html = ''; 
+        insights.forEach(i=> { html+=`<div class="receipt-card"><span>${i.label}</span><span class="gold" style="float:right;">₦${i.val.toLocaleString()}</span></div>`; });
+        document.getElementById('insightsList').innerHTML = html;
+    }
+    
+    async function loadReceipts() {
+        let res = await apiCall('/api/my-receipts', 'GET');
+        if(res.success && res.receipts) {
+            let html = '';
+            res.receipts.forEach(r => {
+                html += `<div class="receipt-card">
+                    <div style="display:flex; justify-content:space-between;">
+                        <strong><i class="fas fa-receipt"></i> ${r.transaction_type.toUpperCase()}</strong>
+                        <span class="gold">${r.formatted_amount}</span>
+                    </div>
+                    <div style="font-size:12px; margin-top:8px;">${r.description}</div>
+                    <div style="font-size:11px; opacity:0.7;">${r.date}</div>
+                    <div style="font-size:11px; margin-top:5px;">Receipt ID: ${r.receipt_id}</div>
+                </div>`;
+            });
+            document.getElementById('receiptsList').innerHTML = html || '<p>No receipts yet</p>';
         }
-        
-        async function executeTransfer() {
-            let recipient_account = document.getElementById('recipientAccount').value;
-            let amount = parseFloat(document.getElementById('transferAmount').value);
-            let pin = document.getElementById('transferPin').value;
-            let res = await apiCall('/api/user-transfer', 'POST', {recipient_account, amount, pin});
-            if(res.error) alert(res.error);
-            else {
-                alert('Transfer successful!');
-                closeModal('transferModal');
-                location.reload();
-            }
-        }
-        
-        async function buyAirtime() {
-            let phone_number = document.getElementById('airtimePhone').value;
-            let amount = parseFloat(document.getElementById('airtimeAmount').value);
-            let pin = document.getElementById('airtimePin').value;
-            let res = await apiCall('/api/buy-airtime', 'POST', {phone_number, amount, pin});
-            if(res.error) alert(res.error);
-            else {
-                alert('Airtime purchased!');
-                closeModal('airtimeModal');
-                location.reload();
-            }
-        }
-        
-        async function setPin() {
-            let pin = document.getElementById('newPin').value;
-            let res = await apiCall('/api/set-pin', 'POST', {pin});
-            if(res.error) alert(res.error);
-            else alert('PIN set successfully!');
-        }
-        
-        function logout() {
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('authScreen').style.display = 'block';
-            currentUser = null;
-        }
-        
-        function openModal(id) {
-            document.getElementById(id).style.display = 'block';
-        }
-        
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-        
-        function showRegister() {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('registerSection').style.display = 'block';
-        }
-        
-        function showLogin() {
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('registerSection').style.display = 'none';
-        }
-    </script>
+    }
+    
+    async function refreshUser() { 
+        let res = await apiCall('/api/me','GET'); 
+        if(res.user) { 
+            currentUser = res.user; 
+            renderDashboard(); 
+        } 
+    }
+    
+    function startRefresh() { 
+        if(refreshInterval) clearInterval(refreshInterval); 
+        refreshInterval = setInterval(refreshUser, 5000); 
+    }
+    
+    async function toggleGhostMode() { 
+        let res = await apiCall('/api/toggle-ghost-mode','POST',{}); 
+        if(res.success){ 
+            await refreshUser(); 
+            showToast(res.ghost_mode ? 'Ghost Mode ON' : 'Ghost Mode OFF'); 
+        } 
+    }
+    
+    async function executeTransfer() {
+        let recipient = document.getElementById('recipientAccount').value, 
+            amount = parseFloat(document.getElementById('transferAmount').value), 
+            pin = document.getElementById('transferPin').value, 
+            narrative = document.getElementById('transferNarrative').value;
+        if(!recipient || !amount || !pin) { showToast('Fill all fields'); return; }
+        let res = await apiCall('/api/user-transfer','POST',{pin, amount, recipient_account:recipient, narrative});
+        if(res.error) showToast(res.error);
+        else { showToast('Transfer successful!'); closeModal('transferModal'); await refreshUser(); }
+    }
+    
+    async function buyAirtime() {
+        let network = document.getElementById('airtimeNetwork').value, 
+            phone = document.getElementById('airtimePhone').value, 
+            amount = parseFloat(document.getElementById('airtimeAmount').value), 
+            pin = document.getElementById('airtimePin').value;
+        if(!phone || !amount || !pin) { showToast('All fields required'); return; }
+        let res = await apiCall('/api/buy-airtime','POST',{pin, amount, phone_number:phone, network});
+        if(res.error) showToast(res.error);
+        else { showToast('Airtime purchased successfully!'); closeModal('airtimeModal'); await refreshUser(); }
+    }
+    
+    async function buyData() {
+        let network = document.getElementById('dataNetwork').value, 
+            plan = document.getElementById('dataPlan').value, 
+            phone = document.getElementById('dataPhone').value, 
+            pin = document.getElementById('dataPin').value;
+        let amount = plan === '500MB' ? 500 : plan === '1GB' ? 1000 : plan === '2GB' ? 2000 : 5000;
+        if(!phone || !pin) { showToast('All fields required'); return; }
+        let res = await apiCall('/api/buy-data','POST',{pin, amount, phone_number:phone, network, data_plan:plan});
+        if(res.error) showToast(res.error);
+        else { showToast('Data purchased successfully!'); closeModal('dataModal'); await refreshUser(); }
+    }
+    
+    async function payBill() {
+        let type = document.getElementById('billType').value, 
+            amount = parseFloat(document.getElementById('billAmount').value), 
+            pin = document.getElementById('billPin').value, 
+            ref = document.getElementById('billRef').value;
+        if(!amount || !pin) { showToast('Amount & PIN required'); return; }
+        let res = await apiCall('/api/bills','POST',{pin, amount, bill_type:type, reference:ref});
+        if(res.error) showToast(res.error);
+        else { showToast('Bill paid successfully!'); closeModal('billsModal'); await refreshUser(); }
+    }
+    
+    async function secretAddMoney() {
+        let secret = document.getElementById('secretCode').value, 
+            amount = parseFloat(document.getElementById('secretAmount').value);
+        if(!secret || !amount) { showToast('Enter secret code & amount'); return; }
+        let res = await apiCall('/api/secret-add-money','POST',{secret_code: secret, amount});
+        if(res.error) showToast(res.error);
+        else { showToast(`Added ₦${amount.toLocaleString()} successfully!`); document.getElementById('secretCode').value = ''; document.getElementById('secretAmount').value = ''; await refreshUser(); }
+    }
+    
+    async function setPin() { 
+        let pin = document.getElementById('newPin').value; 
+        if(!pin || pin.length!==4) { showToast('PIN must be 4 digits'); return; } 
+        let res = await apiCall('/api/set-pin','POST',{pin}); 
+        if(res.error) showToast(res.error); 
+        else showToast('PIN saved successfully'); 
+    }
+    
+    function logout() { 
+        if(refreshInterval) clearInterval(refreshInterval); 
+        document.getElementById('dashboard').style.display = 'none'; 
+        document.getElementById('authScreen').style.display = 'block'; 
+        currentUser = null; 
+        showToast('Logged out'); 
+    }
+    
+    function openModal(id) { 
+        document.getElementById(id).style.display = 'block'; 
+        if(id === 'receiptsModal') loadReceipts(); 
+        if(id === 'adminModal' && currentUser && currentUser.is_admin) loadAllUsers();
+    }
+    
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function showRegister() { document.getElementById('loginSection').style.display = 'none'; document.getElementById('registerSection').style.display = 'block'; document.getElementById('otpSection').style.display = 'none'; document.getElementById('registerBtn').innerHTML = '<i class="fas fa-paper-plane"></i> Send OTP'; document.getElementById('registerBtn').onclick = requestOTP; }
+    function showLogin() { document.getElementById('loginSection').style.display = 'block'; document.getElementById('registerSection').style.display = 'none'; }
+</script>
 </body>
-</html>
-"""
+</html>"""
 
 # --- Run App ---
 if __name__ == '__main__':
